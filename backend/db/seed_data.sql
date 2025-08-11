@@ -30,7 +30,7 @@ INSERT INTO candidates (candidate_id, full_name, email, org_id) VALUES
 
 INSERT INTO interviews (interview_id, candidate_id, template_id, status, total_score, transcript_file_path) VALUES
 (301, 201, 102, 'scored', 42.50, '/transcripts/john_doe.txt'),
-(302, 202, 101, 'pending', NULL, NULL);
+(302, 202, 101, 'not scored', NULL, NULL);
 
 -- Insert candidate answers
 INSERT INTO candidate_answers (answer_id, interview_id, question_id, ans_vid_filename, response_text, score, ai_comments) VALUES
