@@ -24,7 +24,9 @@ def extract_json_from_response(llm_response: str) -> dict:
             raise ValueError("No JSON found in LLM response response.")
     except json.JSONDecodeError as e:
         raise ValueError(f"Failed to parse JSON: {e}")
-    
+
+
+
 
 def get_llm_score(question: str, expected_answer: str, candidate_answer: str, weightage: int):
     try:
@@ -86,16 +88,15 @@ def get_llm_score(question: str, expected_answer: str, candidate_answer: str, we
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-def get_scores(interview_id: int):
+def extract_score_from_llm_response(llm_input_data: dict):
     try:
-        scoring_input_data = get_llm_input_data(interview_id)
 
         results = {}
         all_qtns_scores = []
         total_score = 0
         total_weightage = 0
         # qtn_sl_no = 1
-        for answer in scoring_input_data:
+        for answer in llm_input_data:
             # print(f"Scoring for question serial number: {qtn_sl_no}")
             # qtn_sl_no = qtn_sl_no + 1
             llm_response = get_llm_score(
@@ -114,6 +115,7 @@ def get_scores(interview_id: int):
                 "question_id": answer["question_id"],
                 "weightage": answer["weightage"],
                 "answer_id": answer["answer_id"],
+                "interview_id": answer["interview_id"],
                 **result
             })
 
@@ -122,7 +124,6 @@ def get_scores(interview_id: int):
         results["all_qtns_scores"] = all_qtns_scores
 
         # Update database
-
 
         # return {"results": results}
         print(f"Results: {json.dumps(results)}")
@@ -133,49 +134,15 @@ def get_scores(interview_id: int):
         raise HTTPException(status_code=500, detail=str(e))
     
 
+
+
+
 @router.post("/score_interview")
 def score_interview(interview_id: int):
     try:
-        scoring_input_data = get_llm_input_data(interview_id)
+        llm_input_data = get_llm_input_data(interview_id)
 
-        results = {}
-        all_qtns_scores = []
-        total_score = 0
-        total_weightage = 0
-        # qtn_sl_no = 1
-        for answer in scoring_input_data:
-            # print(f"Scoring for question serial number: {qtn_sl_no}")
-            # qtn_sl_no = qtn_sl_no + 1
-            llm_response = get_llm_score(
-                question=answer["question_text"],
-                expected_answer=answer["expected_answer"],
-                candidate_answer=answer["response_text"],
-                weightage=answer["weightage"]
-            )
-
-            result = extract_json_from_response(llm_response)
-
-            total_score = total_score + result["score"]
-            total_weightage = total_weightage + answer["weightage"]
-
-            all_qtns_scores.append({
-                "question_id": answer["question_id"],
-                "weightage": answer["weightage"],
-                "answer_id": answer["answer_id"],
-                **result
-            })
-
-        results["total_score"] = total_score
-        results["total_weightage"] = total_weightage
-        results["all_qtns_scores"] = all_qtns_scores
-
-        # Update database
-
-
-        # return {"results": results}
-        print(f"Results: {json.dumps(results)}")
-
-        return {"message": "Will get back"}
+        llm_scores = extract_score_from_llm_response(llm_input_data)
  
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

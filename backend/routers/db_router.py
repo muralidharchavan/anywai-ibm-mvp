@@ -104,4 +104,6 @@ def get_llm_input_data(interview_id: int):
         return result
     except Exception as e:
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
