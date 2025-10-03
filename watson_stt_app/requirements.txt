@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+ibm-watson
+ibm-cos-sdk
+ffmpeg-python
+
