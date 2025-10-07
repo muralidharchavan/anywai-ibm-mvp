@@ -5,16 +5,15 @@ import os
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 import traceback
+import logging
 
 load_dotenv()
 
-# Replace with your actual Supabase URL and KEY or use environment variables
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 router = APIRouter()
 
-# Create Supabase client
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # @router.get("/db")
@@ -63,7 +62,7 @@ def get_dashboard_data():
 #         raise HTTPException(status_code=500, detail=str(e))
     
 # @router.get("/get_data_for_scoring")
-def get_llm_input_data(interview_id: int):
+def prepare_llm_input_data(interview_id: int):
     try:
         # Step 1: Get candidate_answers for interview_id
         answers_resp = supabase \
@@ -107,3 +106,75 @@ def get_llm_input_data(interview_id: int):
         raise HTTPException(status_code=500, detail=str(e))
     
 
+<<<<<<< Updated upstream
+=======
+def update_score(interview_id: int, answer_id: int, score: float, ai_comments: str):
+    try:
+        response = (
+            supabase
+            .table("candidate_answers")
+            .update({
+                "score": score,
+                "ai_comments": ai_comments
+            })
+            .eq("interview_id", interview_id)
+            .eq("answer_id", answer_id)
+            .execute()
+        )
+
+        if response.data:
+            logging.info(f"Updated answer_id={answer_id}, interview_id={interview_id}")
+        else:
+            logging.info(f"No matching record found for answer_id={answer_id}, interview_id={interview_id}")
+
+    except Exception as e:
+        logging.error(f"Error updating record: {e}")
+
+
+def update_total_score(interview_id: int, total_score: float):
+    try:
+        response = (
+            supabase
+            .table("interviews")
+            .update({
+                "status": "scored",
+                "total_score": total_score
+            })
+            .eq("interview_id", interview_id)
+            .execute()
+        )
+
+        if response.data:
+            logging.info(f"Updated score information in interview table")
+        else:
+            logging.info(f"Error updating score information in interview table")
+
+    except Exception as e:
+        logging.error(f"Error updating record: {e}")
+
+def get_all_video_file_names(interview_id: int):
+    try:
+        result = (
+            supabase.table("candidate_answers")
+            .select("answer_id, interview_id, ans_vid_filename")
+            .eq("interview_id", interview_id)
+            .execute()
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Supabase query error: {e}")
+    
+
+def add_transcript_to_db(interview_id: int, answer_id: int, transcript_text: str):
+    try:
+        supabase.table("candidate_answers").update({
+            "response_text": transcript_text
+        }).eq("answer_id", answer_id).eq("interview_id", interview_id).execute()
+
+        print(f"✅ Updated answer_id={answer_id} successfully.")
+        return {"answer_id": answer_id, "status": "updated"}
+
+    except Exception as e:
+        print(f"❌ Failed to update answer_id={answer_id}: {e}")
+        return {"answer_id": answer_id, "status": f"error: {e}"}
+>>>>>>> Stashed changes

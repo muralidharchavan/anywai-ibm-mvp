@@ -1,8 +1,14 @@
 from routers.score_interview import score_interview
 from routers.score_interview import get_llm_score
+import logging
+from logger_config import setup_logging_to_debug_level, setup_logging_to_info_level
+import asyncio
+
+setup_logging_to_info_level()
+
 
 if __name__ == "__main__":
-    score_interview(301)
+    asyncio.run(score_interview(301))
     
     # question = "How willing are you to travel between Germany and Switzerland every week?"
     # expected_answer = "Weekly mobility is mandatory"
@@ -10,4 +16,3 @@ if __name__ == "__main__":
     # weightage = 20
     # score_answer = score_answer(question, expected_answer, candidate_answer, weightage)
     # print(f"score_answer: {score_answer}")
-    
