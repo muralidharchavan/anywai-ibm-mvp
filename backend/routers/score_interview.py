@@ -93,7 +93,11 @@ def get_llm_score(question: str, expected_answer: str, candidate_answer: str, we
         raise HTTPException(status_code=500, detail=str(e))
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 def extract_score_from_llm_response(llm_input_data: dict):
+=======
+def update_scores_in_db(llm_input_data: dict, interview_id: int):
+>>>>>>> Stashed changes
 =======
 def update_scores_in_db(llm_input_data: dict, interview_id: int):
 >>>>>>> Stashed changes
@@ -120,6 +124,7 @@ def update_scores_in_db(llm_input_data: dict, interview_id: int):
             total_weightage = total_weightage + answer["weightage"]
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             all_qtns_scores.append({
                 "question_id": answer["question_id"],
                 "weightage": answer["weightage"],
@@ -128,6 +133,8 @@ def update_scores_in_db(llm_input_data: dict, interview_id: int):
                 **result
             })
 =======
+=======
+>>>>>>> Stashed changes
             # all_qtns_scores.append({
             #     "question_id": answer["question_id"],
             #     "weightage": answer["weightage"],
@@ -135,6 +142,7 @@ def update_scores_in_db(llm_input_data: dict, interview_id: int):
             #     "interview_id": interview_id,
             #     **result
             # })
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
             # Update database
@@ -154,6 +162,19 @@ def update_scores_in_db(llm_input_data: dict, interview_id: int):
 
         return {"message": f"Interview with id {interview_id} is scored and database is updated"}
 >>>>>>> Stashed changes
+=======
+
+            # Update database
+            update_score(interview_id, answer["answer_id"], result["score"], result["feedback"])
+
+        # results["total_score"] = total_score
+        # results["total_weightage"] = total_weightage
+        # results["all_qtns_scores"] = all_qtns_scores
+
+        update_total_score(interview_id, total_score)
+
+        return {"message": f"Interview with id {interview_id} is scored and database is updated"}
+>>>>>>> Stashed changes
  
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -161,8 +182,11 @@ def update_scores_in_db(llm_input_data: dict, interview_id: int):
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 @router.post("/score_interview")
@@ -170,6 +194,7 @@ async def score_interview(interview_id: int):
     logging.info("\n" * 5)
     logging.info(f"Processing started for interview_id: {interview_id}")
     try:
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         llm_input_data = get_llm_input_data(interview_id)
 
@@ -180,6 +205,12 @@ async def score_interview(interview_id: int):
         response = await convert_video_to_text(interview_id)
         logging.info(f"Transcription of all videos of interview_id: {interview_id} are processed and updated to database.")
 
+=======
+        # For the interview id, convert video to text for each question/video and save the text in database
+        response = await convert_video_to_text(interview_id)
+        logging.info(f"Transcription of all videos of interview_id: {interview_id} are processed and updated to database.")
+
+>>>>>>> Stashed changes
         # Prepare imput data for invoking LLM
         llm_input_data = prepare_llm_input_data(interview_id)
         logging.info("LLM input data is prepared for interview_id: {interview_id}")
@@ -190,6 +221,9 @@ async def score_interview(interview_id: int):
         logging.debug(f"llm_scores -> {llm_scores}")
         return llm_scores
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -107,7 +107,10 @@ def prepare_llm_input_data(interview_id: int):
     
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 def update_score(interview_id: int, answer_id: int, score: float, ai_comments: str):
     try:
         response = (
@@ -176,5 +179,9 @@ def add_transcript_to_db(interview_id: int, answer_id: int, transcript_text: str
 
     except Exception as e:
         print(f"❌ Failed to update answer_id={answer_id}: {e}")
+<<<<<<< Updated upstream
+        return {"answer_id": answer_id, "status": f"error: {e}"}
+>>>>>>> Stashed changes
+=======
         return {"answer_id": answer_id, "status": f"error: {e}"}
 >>>>>>> Stashed changes
