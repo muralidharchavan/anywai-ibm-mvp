@@ -5,6 +5,7 @@ import requests
 from fastapi import FastAPI, HTTPException
 import httpx  # async HTTP client
 from .db_router import get_all_video_file_names, add_transcript_to_db
+from .vid_to_stt import transcribe_endpoint
 
 # In the problem module:
 logger = logging.getLogger("udao.transcriber")
@@ -12,20 +13,14 @@ logger.setLevel(logging.DEBUG)  # show debug logs for this module only
 
 async def get_transcript_text(ans_vid_filename: str) -> str:
     """
-    Calls the external transcript API asynchronously to get text.
+    Calls internal transcribe function (sync) to get text.
     """
-    async with httpx.AsyncClient(timeout=600) as client:
-        try:
-            response = await client.post(
-                os.getenv("TRANSCRIBE_API_URL"),
-                json={"file_key": ans_vid_filename}
-            )
-            response.raise_for_status()
-            data = response.json()
-            return data.get("transcript", "")
-        except Exception as e:
-            logger.error(f"Error fetching transcript for {ans_vid_filename}: {e}")
-            return ""
+    try:
+        data = transcribe_endpoint(ans_vid_filename)
+        return data.get("transcript", "")
+    except Exception as e:
+        logger.error(f"Error fetching transcript for {ans_vid_filename}: {e}")
+        return ""
         
 
 async def process_single_answer(answer_id: int, interview_id: int, file_name: str):

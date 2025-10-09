@@ -6,3 +6,6 @@ python-dotenv
 pydantic
 ibm_watsonx_ai
 supabase
+ibm-watson
+ibm-cos-sdk
+ffmpeg-python
