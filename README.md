@@ -1,20 +1,20 @@
 # IBM UDAO Interview scorer
 
 ## Overview
-This artifact is a Scouting Services and Assessment Services that matches potential candidates to the potential employers;  based on matching candidate's skills with the skills needed for the job position; using AI services so that they can shorten the time to market with enhanced features for the user "organization"
+This artifact is a Scouting Services and Assessment Services that matches potential candidates to the potential employers;  based on matching candidate's skills with the skills needed for the job position; using AI services so that they can shorten the time to market with enhanced features for the user "organization".
 
 The solution uses watsonx to analyze the candidate interview video content, converted to text, and score the candidate based on the responses to the questions. For scoring expected answers provided are used by  this solutions. The interview video is converted to audio file and then to text. watsonx.ai analyses the text and provides a score based on actual answers and expected answers.
 
 ## Technology Used 
-watsonx.ai: is used to analyze interview transcript based on questions and expected answers. It scores each answer based on weightage given to questions by hiring organizations.
+**watsonx.ai**: is used to analyze interview transcript based on questions and expected answers. It scores each answer based on weightage given to questions by hiring organizations.
 
-Cloud Object Storage: Interview video recordings are made available in IBM Cloud Object Storage.
+**Cloud Object Storage**: Interview video recordings are made available in IBM Cloud Object Storage.
 
-IBM PostgreSQL: Questions and expected answers are stored in PostgreSQL database
+**PostgreSQL**: Questions and expected answers are stored in PostgreSQL database
 
-watson Speech to Text service: is used to convert the audio extracted from the candidate interview video
+**Watson Speech to Text**: is used to convert the audio extracted from the candidate interview video
 
-IBM Code Engine: is used as runtime for custom applications that integrate with watsonx.ai, watson Speech to Text service, Cloud Object Storage and database services
+**IBM Code Engine**: is used as runtime for custom applications that integrate with watsonx.ai, watson Speech to Text service, Cloud Object Storage and database services
 
 ## Architecture diagram
 ![Architecture diagram](./docs/Architecture_Diagram.jpg)
@@ -92,7 +92,7 @@ The Supabase database tables (interview_templates, candidates, questions, interv
 ### Gather configuration information
 
 - Clone/download the GitHub repo
-- Refer to .env_template file. Gather the following information:
+- Refer to `.env_template` file. Gather the following information:
     - watsonx API Key and URL - https://www.ibm.com/docs/en/watsonx/w-and-w/2.2.0?topic=tutorials-generating-api-keys
     - Supabase url and Supabase key - https://supabase.com/docs/guides/api#api-url-and-keys
     - Object Storage details - https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-service-credentials
@@ -113,7 +113,7 @@ There are two applications that should be deployed to application.
 - Make a note of the backend application url.
 - Update the backend application url in environment variables of frontend application.
 
-##### 2.2 Deploy frontend react application
+Now deploy frontend react application
 <Jainam to update this section>
 
 ### Run the application
