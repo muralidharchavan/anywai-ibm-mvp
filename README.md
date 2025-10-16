@@ -1,6 +1,6 @@
 # IBM UDAO Interview scorer
 
-## 🚀 Overview
+## Overview
 This artifact is a Scouting Services and Assessment Services that matches potential candidates to the potential employers;  based on matching candidate's skills with the skills needed for the job position; using AI services so that they can shorten the time to market with enhanced features for the user "organization"
 
 The solution uses watsonx to analyze the candidate interview video content, converted to text, and score the candidate based on the responses to the questions. For scoring expected answers provided are used by  this solutions. The interview video is converted to audio file and then to text. watsonx.ai analyses the text and provides a score based on actual answers and expected answers.
@@ -31,6 +31,7 @@ IBM Code Engine: is used as runtime for custom applications that integrate with 
 8. For each question, compute score based on answer score and question weightage. Also compute overall score.
 
 ## Folder Structure
+```
 ANYWAI-IBM-MVP/
 │
 ├── backend/                         # Backend application
@@ -62,7 +63,7 @@ ANYWAI-IBM-MVP/
 ├── docker-compose.yml               # Docker orchestration (services, DB, backend, etc.)
 ├── README.md                        # Root-level overview of project
 └── local_test.py                    # Top-level quick test file (if not part of backend)
-
+```
 
 ## Setup and run
 
@@ -75,18 +76,47 @@ ANYWAI-IBM-MVP/
 - Object Storage instance on IBM Cloud
 - Docker Engine
 - Supabase account
+- IBM Cloud CLI - https://cloud.ibm.com/docs/cli?topic=cli-getting-started
+
 
 ### Database schema
 ![Database schema](./data/db-schema.jpg)
 
-### Existing setup for the 
+### Existing setup required
+This MVP relies on some of the existing interview data already being available in database and also interview video files available in Object storage. 
 
-### Notes:
-- The candidate interview video files should already be available in IBM Object Storage.
+The interview video files should be available in Object storage. Name these files in some logical way.
+The Supabase database tables (interview_templates, candidates, questions, interviews) should be populated with the initial interview details. You may use data/Sample_data_Insert_SQL.sql file to load a sample set of data.
+
 
 ### Gather configuration information
 
 - Clone/download the GitHub repo
-- Refer to .env_template file. Gather the following information
+- Refer to .env_template file. Gather the following information:
     - watsonx API Key and URL - https://www.ibm.com/docs/en/watsonx/w-and-w/2.2.0?topic=tutorials-generating-api-keys
+    - Supabase url and Supabase key - https://supabase.com/docs/guides/api#api-url-and-keys
+    - Object Storage details - https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-service-credentials
+    - Watson Speech to Text service - https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-gettingStarted
 
+### Steps to install applications
+#### 1. Create file with environment variables
+- Create a new file named .env file in `backend` folder.
+- Copy all the variables from .env_template file to .env file.
+- Enter values for all the variables using the data that you gathered in the section `Gather configuration information`
+- Save the .env file.
+
+#### 2. Deploy applications to Code Engine
+There are two applications that should be deployed to application.
+1. Backend application (/backend)
+2. Frontend application (/frontend)
+- Use https://cloud.ibm.com/docs/codeengine?topic=codeengine-getting-started#app-hello to deploy the applications to IBM Cloud Code engine.
+- Make a note of the backend application url.
+- Update the backend application url in environment variables of frontend application.
+
+##### 2.2 Deploy frontend react application
+<Jainam to update this section>
+
+### Run the application
+Open the application url for frontend application in a browser.
+
+<Jainam to explain, with screenshots, how application can be used>
