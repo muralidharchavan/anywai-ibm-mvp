@@ -7,8 +7,7 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const apiBase = process.env.REACT_APP_API_BASE;
 
-
-  useEffect(() => {
+const fetchDashboardData = () => {
   fetch(`${apiBase}/dashboard_data`)
     .then(res => {
       if (!res.ok) throw new Error("Failed to fetch data");
@@ -17,11 +16,16 @@ export default function Dashboard() {
     .then((data) => {
       setCandidates(data);
       setLoading(false);
+      setError(null);
     })
     .catch(() => {
       setError("Failed to load candidates");
       setLoading(false);
     });
+};
+
+useEffect(() => {
+  fetchDashboardData();
 }, []);
 
   const handleScoreClick = async (interviewId) => {
@@ -36,6 +40,8 @@ export default function Dashboard() {
 
     // Optionally update candidate status in state here
     // Update candidate status to "scored"
+    
+    
     setCandidates(prevCandidates =>
       prevCandidates.map(candidate =>
         candidate.interview_id === interviewId
@@ -43,6 +49,9 @@ export default function Dashboard() {
           : candidate
       )
     );
+
+    // Refresh dashboard data
+    fetchDashboardData();
 
   } catch (error) {
     alert("Error scoring interview");
@@ -57,13 +66,14 @@ export default function Dashboard() {
   return (
   
     <div className="table-container">
-  <h1>Dashboard</h1>
+  <h1>UDAO Dashboard</h1>
   <table className="dashboard-table">
     <thead>
       <tr>
         <th>Candidate</th>
         <th>Template</th>
         <th>Status</th>
+        <th>Score</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -79,6 +89,7 @@ export default function Dashboard() {
               <span className="text-yellow-600 font-medium">Not Scored</span>
             )}
           </td>
+          <td>{candidate.total_score !== null && candidate.total_score !== undefined ? candidate.total_score : "-"}</td> 
           <td>
             {candidate.status === "scored" ? (
               <button className="button-primary">Scored</button>
