@@ -127,12 +127,12 @@ Now deploy frontend react application :
 - Open the application url for frontend application in a browser.
 - you will able to see dashboard as below screenshot as per the sample data that has added over the database
 
-![alt text](s1-1.png)
+![alt text](s3.png)
 
 - click on the score button for the interviwer and application will call the backend api which has scoring functinality added (sample scrrenshot attached below for ref)
 - once api called successfully you will able to see the score for that particular user in dashboard as shown in below screenshot.
 
-![alt text](s2-1.png)
+![alt text](s4.png)
 
 
 
