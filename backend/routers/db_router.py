@@ -28,12 +28,13 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 @router.get("/dashboard_data")
 def get_dashboard_data():
     try:
-        response = supabase.table("interviews").select("status, interview_id, candidates(full_name, candidate_id), interview_templates(template_name, template_id)").execute()
+        response = supabase.table("interviews").select("status, interview_id, total_score, candidates(full_name, candidate_id), interview_templates(template_name, template_id)").execute()
         flat_data = [
             {
                 "full_name": row["candidates"]["full_name"],
                 "template_name": row["interview_templates"]["template_name"],
                 "status": row["status"],
+                "total_score": row["total_score"],
                 "interview_id": row["interview_id"],
                 "candidate_id": row["candidates"]["candidate_id"],
                 "template_id": row["interview_templates"]["template_id"]
