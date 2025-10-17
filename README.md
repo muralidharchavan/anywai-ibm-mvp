@@ -109,14 +109,29 @@ The Supabase database tables (interview_templates, candidates, questions, interv
 There are two applications that should be deployed to application.
 1. Backend application (/backend)
 2. Frontend application (/frontend)
+
+Deploy backend application :
 - Use https://cloud.ibm.com/docs/codeengine?topic=codeengine-getting-started#app-hello to deploy the applications to IBM Cloud Code engine.
 - Make a note of the backend application url.
 - Update the backend application url in environment variables of frontend application.
 
-Now deploy frontend react application
-<Jainam to update this section>
+Now deploy frontend react application :
+- Use the frontend folder from clone/downloaded githib repo which has frontend application in react
+- Change the .env "backend application base url" with one that you got after deployinh the backend application.
+- Update the frontend application 
+- Deploy the application to the code engine the same way you deployed the backend application
+- Make a note of final application url 
+
 
 ### Run the application
-Open the application url for frontend application in a browser.
+- Open the application url for frontend application in a browser.
+- you will able to see dashboard as below screenshot as per the sample data that has added over the database
 
-<Jainam to explain, with screenshots, how application can be used>
+![alt text](s1.png)
+
+- click on the score button for the interviwer and application will call the backend api which has scoring functinality added (sample scrrenshot attached below for ref)
+
+![alt text](s2.png)
+
+- once api called successfully you will able to see the score in the database for that particular user
+
