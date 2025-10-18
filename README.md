@@ -34,7 +34,7 @@ The solution uses watsonx to analyze the candidate interview video content, conv
 ```
 ANYWAI-IBM-MVP/
 │
-├── backend/                         # Backend application
+├── backend/                         # Backend python application
 │   ├── routers/                     # API route definitions
 │   │   ├── db_router.py             # Integration with Supabase database
 │   │   └── score_interview.py       # Score candidate answer using watsonx.ai models
@@ -63,30 +63,35 @@ ANYWAI-IBM-MVP/
 ├── docker-compose.yml               # Docker orchestration (services, DB, backend, etc.)
 ├── README.md                        # Root-level overview of project
 └── local_test.py                    # Top-level quick test file (if not part of backend)
+├── frontend/                        # Frontend node application
 ```
 
 ## Setup and run
 
 ### Pre-requisites
-- IBM Cloud account
-- IBM watsonx.ai runtime service
-- watsonx Orchestrate instance
-- Code Engine
-- Speech to Text service instance on IBM Cloud
-- Object Storage instance on IBM Cloud
-- Docker Engine
-- Supabase account
-- IBM Cloud CLI - https://cloud.ibm.com/docs/cli?topic=cli-getting-started
+- [IBM Cloud account](https://www.ibm.com/account/reg/us-en/signup)
+- [IBM watsonx.ai runtime service](https://cloud.ibm.com/catalog/services/watsonxai-studio)
+- [watsonx Orchestrate instance](https://cloud.ibm.com/catalog/services/watsonx-orchestrate)
+- [Code Engine](https://cloud.ibm.com/containers/serverless/overview)
+- [Speech to Text service instance on IBM Cloud](https://cloud.ibm.com/catalog/services/speech-to-text)
+- [Object Storage instance on IBM Cloud](https://cloud.ibm.com/objectstorage)
+- [Supabase account](https://supabase.com/)
+- [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
 
 
 ### Database schema
-![Database schema](./data/db-schema.jpg)
+![Database schema](./data/db_schema.sql)
+![Database schema image](./data/db-schema.jpg)
+
+### Scoring prompt/logic
+Each question carries a certain weightage and an extpected answer, which should be available already in database. The backend application uses watsonx.ai to score the candidate answers based on question weightage and expected response. It then adds up candidate score for all the responses and saved against the candidate interview data in database, which will be shown on to user dashboard.
+
 
 ### Existing setup required
 This MVP relies on some of the existing interview data already being available in database and also interview video files available in Object storage. 
 
 The interview video files should be available in Object storage. Name these files in some logical way.
-The Supabase database tables (interview_templates, candidates, questions, interviews) should be populated with the initial interview details. You may use data/Sample_data_Insert_SQL.sql file to load a sample set of data.
+For scoring of candidate interviews, the Supabase database tables (interview_templates, candidates, questions, interviews) should be populated with the interview details. You may refer to data/Sample_data_Insert_SQL.sql file to load a sample set of data.
 
 
 ### Gather configuration information
@@ -112,20 +117,20 @@ There are two applications that should be deployed to application.
 
 Deploy backend application :
 - Use https://cloud.ibm.com/docs/codeengine?topic=codeengine-getting-started#app-hello to deploy the applications to IBM Cloud Code engine.
-- Make a note of the backend application url.
+- When deployed, make a note of the backend application url.
 - Update the backend application url in environment variables of frontend application.
 
-Now deploy frontend react application :
-- Use the frontend folder from clone/downloaded githib repo which has frontend application in react
+Now deploy frontend react application:
+- Use the frontend folder from clone/downloaded github repo which has frontend application in react
 - Change the .env "backend application base url" with one that you got after deployinh the backend application.
 - Update the frontend application 
 - Deploy the application to the code engine the same way you deployed the backend application
-- Make a note of final application url 
+- Once deployed, make a note of the frontend application url.
 
 
 ### Run the application
 - Open the application url for frontend application in a browser.
-- you will able to see dashboard as below screenshot as per the sample data that has added over the database
+- You will able to see dashboard as below screenshot as per the sample data that has added over the database.
 
 ![alt text](docs/s3.png)
 
@@ -133,6 +138,3 @@ Now deploy frontend react application :
 - once api called successfully you will able to see the score for that particular user in dashboard as shown in below screenshot.
 
 ![alt text](docs/s4.png)
-
-
-
